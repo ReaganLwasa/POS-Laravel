@@ -31,25 +31,25 @@
                                 <tr>
                                     <td>1</td>
                                     <td>
-                                        <select name="product_id" id="product_id" class="from-control product_id">
+                                        <select name="product_id" id="product_id" class="form-control product_id">
                                             @foreach ($products as $product)
                                             <option value="{{ $product->id }}">{{ $product->product_name }}</option>
                                             @endforeach
                                         </select>
                                     </td>
                                     <td>
-                                        <input type="number" name="quantity[]" id="quantity" class="from-control">
+                                        <input type="number" name="quantity[]" id="quantity" class="form-control">
                                     </td>
                                     <td>
-                                        <input type="number" name="price[]" id="price" class="from-control">
+                                        <input type="number" name="price[]" id="price" class="form-control">
                                     </td>
                                     <td>
-                                        <input type="number" name="discount[]" id="discount" class="from-control">
+                                        <input type="number" name="discount[]" id="discount" class="form-control">
                                     </td>
                                     <td>
-                                        <input type="number" name="total_amount[]" id="total" class="from-control">
+                                        <input type="number" name="total_amount[]" id="total" class="form-control">
                                     </td>
-                                    <td><a href="" class="btn btn-danger btn-sm delete rounded-circle"><i
+                                    <td><a href="" class="btn btn-danger btn-sm rounded-circle"><i
                                                 class="fa fa-times-circle"></i></a>
                                     </td>
                                 </tr>
