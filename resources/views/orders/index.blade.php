@@ -33,21 +33,25 @@
                                     <td>
                                         <select name="product_id" id="product_id" class="form-control product_id">
                                             @foreach ($products as $product)
-                                            <option value="{{ $product->id }}">{{ $product->product_name }}</option>
+                                            <option data-price="{{ $product->price }}" value="{{ $product->id }}">
+                                                {{ $product->product_name }}</option>
                                             @endforeach
                                         </select>
                                     </td>
                                     <td>
-                                        <input type="number" name="quantity[]" id="quantity" class="form-control">
+                                        <input type="number" name="quantity[]" id="quantity"
+                                            class="form-control quantity">
                                     </td>
                                     <td>
-                                        <input type="number" name="price[]" id="price" class="form-control">
+                                        <input type="number" name="price[]" id="price" class="form-control price">
                                     </td>
                                     <td>
-                                        <input type="number" name="discount[]" id="discount" class="form-control">
+                                        <input type="number" name="discount[]" id="discount"
+                                            class="form-control discount">
                                     </td>
                                     <td>
-                                        <input type="number" name="total_amount[]" id="total" class="form-control">
+                                        <input type="number" name="total_amount[]" id="total"
+                                            class="form-control total_amount">
                                     </td>
                                     <td><a href="" class="btn btn-danger btn-sm rounded-circle"><i
                                                 class="fa fa-times-circle"></i></a>
@@ -61,7 +65,7 @@
             <div class="col-md-3">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Total 0.00</h4>
+                        <h4>Total <b class="total"> 0.00 </b></h4>
                     </div>
                     <div class="card-body">
                         .............
@@ -107,7 +111,7 @@
                     </div>
                     <div class="form-group">
                         <label for="">Alert Stock</label>
-                        <input type="text" name="alert stock" id="" class="form-control">
+                        <input type="text" name="alert stock" id="" class="form-control ">
                     </div>
                     <div class="form-group">
                         <label for="">Description</label>
@@ -153,7 +157,7 @@ $(document).ready(function() {
             '<td> <input type="number" name="quantity[]" class="form-control"></td>' +
             '<td> <input type="number" name="price[]" class="form-control"></td>' +
             '<td> <input type="number" name="discount[]" class="form-control"></td>' +
-            '<td> <input type="number" name="total_amount[]" class="form-control"></td>' +
+            '<td> <input type="number" name="total_amount[]" class="form-control total_amount"></td>' +
             '<td><a class="btn btn-danger btn-sm delete rounded-circle"><i class="fa fa-times-circle"></a></td>'
 
         $('.addMoreProduct').append(tr);
@@ -163,6 +167,38 @@ $(document).ready(function() {
     $('.addMoreProduct').delegate('.delete', 'click', function() {
         $(this).parent().parent().remove();
     })
+
+    function TotalAmount() {
+        //i will make all the loics here
+        var total = 0;
+        $('.total_amount').each(function(i, e) {
+            var amount = $(this).val() - 0;
+            total += amount;
+        });
+
+        $('.total').html(total);
+    }
+
+    $('.addMoreProduct').delegate('.product_id', 'change', function() {
+        var tr = $(this).parent().parent();
+        var price = tr.find('.product_id option:selected').attr('data-price');
+        tr.find('.price').val(price);
+        var qty = tr.find('.quantity').val() - 0;
+        var disc = tr.find('.discount').val() - 0;
+        var price = tr.find('.price').val() - 0;
+        var Total_amount = (qty * price) - ((qty * price * disc) / 100);
+        tr.find('.total_amount').val(total_amount);
+    })
+
+    $('.addMoreProduct').delegate('.quantity', 'discount', 'keyup', function() {
+        var tr = $(this).parent().parent();
+        var qty = tr.find('.quantity').val() - 0;
+        var disc = tr.find('.discount').val() - 0;
+        var price = tr.find('.price').val() - 0;
+        var Total_amount = (qty * price) - ((qty * price * disc) / 100);
+        tr.find('.total_amount').val(total_amount);
+    })
+
 })
 </script>
 @endsection
