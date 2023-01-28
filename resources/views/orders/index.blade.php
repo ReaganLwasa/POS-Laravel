@@ -16,6 +16,7 @@
                         <table class="table table-bordered table-left">
                             <thead>
                                 <tr>
+                                    <th></th>
                                     <th>Product Name</th>
                                     <th>Quantity</th>
                                     <th>Price</th>
@@ -28,6 +29,7 @@
                             </thead>
                             <tbody class="addMoreProduct">
                                 <tr>
+                                    <td>1</td>
                                     <td>
                                         <select name="product_id" id="product_id" class="from-control product_id">
                                             @foreach ($products as $product)
@@ -47,7 +49,7 @@
                                     <td>
                                         <input type="number" name="total_amount[]" id="total" class="from-control">
                                     </td>
-                                    <td><a href="" class="btn btn-sm btn-danger delete"><i
+                                    <td><a href="" class="btn btn-danger btn-sm delete rounded-circle"><i
                                                 class="fa fa-times-circle"></i></a>
                                     </td>
                                 </tr>
@@ -140,20 +142,27 @@
 
 @section('script')
 <script>
-// $(document).ready(function() {
+$(document).ready(function() {
+    $('.add_more').on('click', function() {
+        event.preventDefault();
+        var product = $('.product_id').html();
+        var numberofrow = ($('.addMoreProduct tr').length - 0) + 1;
+        var tr = '<tr><td class"no"">' + numberofrow + '</td>' +
+            '<td><select class="form-control product_id" name="product_id[]">' + product +
+            '</select></td>' +
+            '<td> <input type="number" name="quantity[]" class="form-control"></td>' +
+            '<td> <input type="number" name="price[]" class="form-control"></td>' +
+            '<td> <input type="number" name="discount[]" class="form-control"></td>' +
+            '<td> <input type="number" name="total_amount[]" class="form-control"></td>' +
+            '<td><a class="btn btn-danger btn-sm delete rounded-circle"><i class="fa fa-times-circle"></a></td>'
 
-// })
+        $('.addMoreProduct').append(tr);
+    })
 
-$('.add_more').on('click', function() {
-    var product = $('.product_id').html();
-    var numberofroe = ($('.addMoreProduct tr').length - 0) + 1;
-    var tr = '<tr><td> class"no">' + numberofrow + '</td>' +
-        '<td><select class="from-control product_id" name="product_id[]">' + product +
-        '</select></td>' +
-        '<td> <input type="number" name="quantity[]" class="form-control"</td>' +
-        '<td> <input type="number" name="price[]" class="form-control"</td>' +
-        '<td> <input type="number" name="discount[]" class="form-control"</td>' +
-        '<td> <input type="number" name="total_amount[]" class="form-control"</td>' +
+    //delete a row
+    $('.addMoreProduct').delegate('.delete', 'click', function() {
+        $(this).parent().parent().remove();
+    })
 })
 </script>
 @endsection
