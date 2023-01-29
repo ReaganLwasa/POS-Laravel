@@ -12,55 +12,57 @@
                             <i class="fa fa-plus"></i> Add New Products
                         </a>
                     </div>
-                    <div class="card-body">
-                        <table class="table table-bordered table-left">
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th>Product Name</th>
-                                    <th>Quantity</th>
-                                    <th>Price</th>
-                                    <th>Discount (%)</th>
-                                    <th>Total</th>
-                                    <th><a href="" class="btn btn-sm btn-success"><i
-                                                class="fa fa-plus-circle add_more"></i></a>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody class="addMoreProduct">
-                                <tr>
-                                    <td>1</td>
-                                    <td>
-                                        <select name="product_id" id="product_id" class="form-control product_id">
-                                            <option value="">Select Item</option>
-                                            @foreach ($products as $product)
-                                            <option data-price="{{ $product->price }}" value="{{ $product->id }}">
-                                                {{ $product->product_name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <input type="number" name="quantity[]" id="quantity"
-                                            class="form-control quantity" value="1">
-                                    </td>
-                                    <td>
-                                        <input type="number" name="price[]" id="price" class="form-control price">
-                                    </td>
-                                    <td>
-                                        <input type="number" name="discount[]" id="discount"
-                                            class="form-control discount">
-                                    </td>
-                                    <td>
-                                        <input type="number" name="total_amount[]" id="total"
-                                            class="form-control total_amount">
-                                    </td>
-                                    <td><a href="" class="btn btn-danger btn-sm rounded-circle"><i
-                                                class="fa fa-times-circle"></i></a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <form action="{{ route('orders.store') }}" method="post">
+                        @csrf
+                        <div class="card-body">
+                            <table class="table table-bordered table-left">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Product Name</th>
+                                        <th>Quantity</th>
+                                        <th>Price</th>
+                                        <th>Discount (%)</th>
+                                        <th>Total</th>
+                                        <th><a href="" class="btn btn-sm btn-success"><i
+                                                    class="fa fa-plus-circle add_more"></i></a>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="addMoreProduct">
+                                    <tr>
+                                        <td>1</td>
+                                        <td>
+                                            <select name="product_id" id="product_id" class="form-control product_id">
+                                                <option value="">Select Item</option>
+                                                @foreach ($products as $product)
+                                                <option data-price="{{ $product->price }}" value="{{ $product->id }}">
+                                                    {{ $product->product_name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="number" name="quantity[]" id="quantity"
+                                                class="form-control quantity" value="1">
+                                        </td>
+                                        <td>
+                                            <input type="number" name="price[]" id="price" class="form-control price">
+                                        </td>
+                                        <td>
+                                            <input type="number" name="discount[]" id="discount"
+                                                class="form-control discount">
+                                        </td>
+                                        <td>
+                                            <input type="number" name="total_amount[]" id="total"
+                                                class="form-control total_amount">
+                                        </td>
+                                        <td><a href="" class="btn btn-danger btn-sm rounded-circle"><i
+                                                    class="fa fa-times-circle"></i></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                 </div>
             </div>
             <div class="col-md-4">
@@ -127,7 +129,7 @@
                                 <td>
                                     <button class="btn-danger btn-lg btn-block mt-2">Calculator</button>
                                 </td>
-                                <div class="text-center" style="text-align: center">
+                                <div class="text-center" style="text-align: center !important">
                                     <a href="" class="text-danger text-center"> <i class="fa fa-sign-out-alt"></i> </a>
                                 </div>
                             </div>
@@ -135,6 +137,7 @@
                     </div>
                 </div>
             </div>
+            </form>
         </div>
     </div>
 </div>
@@ -326,8 +329,16 @@ $(document).ready(function() {
         var Total_amount = (qty * price) - ((qty * price * disc) / 100);
         tr.find('.total_amount').val(Total_amount);
         TotalAmount();
-    })
+    });
 
+    $('#paid_amount').keyup(function() {
+        //alert(1)
+        var total = $('.total').html();
+        var paid_amount = $(this).val();
+        var tot = paid_amount - total;
+        $('#balance').val(tot).toFixed(2);
+
+    })
 
 })
 </script>
