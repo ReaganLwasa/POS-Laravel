@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -39,6 +40,28 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         return $request->all();
+
+        DB::transaction(function () use ($request){
+
+          // Order Modal
+            $orders = new Order;
+            $orders->name = $request->customer_name;
+            $orders->phone = $request->customer_phone;
+            $orders->save();
+            $order_id = $orders->id;
+
+            //['order_id', 'product_id', 'unitprice', 'quantinty', 'amount', 'discount'];
+
+          // Order Details Modal
+            $order_details = new Order_Detail;
+            $order
+
+          //Transaction Madal
+
+        })
+
+       
+
     }
 
     /**
