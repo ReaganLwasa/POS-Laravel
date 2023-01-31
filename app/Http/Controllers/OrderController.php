@@ -50,15 +50,20 @@ class OrderController extends Controller
             $orders->save();
             $order_id = $orders->id;
 
-            //['order_id', 'product_id', 'unitprice', 'quantinty', 'amount', 'discount'];
+            //['order_id', 'product_id', 'unitprice', 'quantity', 'amount', 'discount'];
 
           // Order Details Modal
             $order_details = new Order_Detail;
-            $order
+            $order_details->order_id = $order_id;
+            $order_details->unitprice = $request -> unitprice;
+            $order_details->quantity = $request -> quantity;
+            $order_details->discount = $request -> discount;
+            $order_details->amount = $request -> amount;
 
           //Transaction Madal
 
-        })
+
+        });
 
        
 
