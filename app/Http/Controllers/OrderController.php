@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -53,14 +54,27 @@ class OrderController extends Controller
             //['order_id', 'product_id', 'unitprice', 'quantity', 'amount', 'discount'];
 
           // Order Details Modal
+
+          for ($product_id =0; $product_id < count($request->product_id); $product_id++) {
             $order_details = new Order_Detail;
             $order_details->order_id = $order_id;
-            $order_details->unitprice = $request -> unitprice;
-            $order_details->quantity = $request -> quantity;
-            $order_details->discount = $request -> discount;
-            $order_details->amount = $request -> amount;
+            $order_details->product_id = $request -> product_id[$product_id];
+            $order_details->unitprice = $request -> unitprice[$product_id];
+            $order_details->quantity = $request -> quantity[$product_id];
+            $order_details->discount = $request -> discount[$product_id];
+            $order_details->amount = $request -> amount[$product_id];
+            $order_details->save();
+          }
+            
 
           //Transaction Madal
+            $Transaction = new Transaction();
+            $Transaction->order_id = $order_id;
+            $Transaction->product_id = auth()->user()->id;
+            $Transaction->balance = $request -> balance;
+            $Transaction->paid_amount = $request -> paid_amount;
+            $Transaction->payment_method = $request -> payment_method;
+            $Transaction->amount = $request -> amount;
 
 
         });
