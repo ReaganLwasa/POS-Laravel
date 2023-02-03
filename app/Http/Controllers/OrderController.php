@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\Order_details;
 use App\Models\Product;
 use App\Models\Transaction;
+use Countable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -40,7 +42,8 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        return $request->all();
+    
+       //return $request -> all();
 
         DB::transaction(function () use ($request){
 
@@ -55,31 +58,45 @@ class OrderController extends Controller
 
           // Order Details Modal
 
-          for ($product_id =0; $product_id < count($request->product_id); $product_id++) {
-            $order_details = new Order_Detail;
+          for ($product_id = 0; $product_id < $request->product_id; $product_id++) 
+          {
+            $order_details = new Order_details;
             $order_details->order_id = $order_id;
             $order_details->product_id = $request -> product_id[$product_id];
-            $order_details->unitprice = $request -> unitprice[$product_id];
+            $order_details->unitprice = $request -> price[$product_id];
             $order_details->quantity = $request -> quantity[$product_id];
             $order_details->discount = $request -> discount[$product_id];
-            $order_details->amount = $request -> amount[$product_id];
+            $order_details->amount = $request -> total_amount[$product_id];
             $order_details->save();
           }
-            
 
           //Transaction Madal
             $Transaction = new Transaction();
             $Transaction->order_id = $order_id;
-            $Transaction->product_id = auth()->user()->id;
+            $Transaction->user_id = auth()->user()->id;
             $Transaction->balance = $request -> balance;
             $Transaction->paid_amount = $request -> paid_amount;
-            $Transaction->payment_method = $request -> payment_method;
-            $Transaction->amount = $request -> amount;
+            $Transaction->payment_method = $order_details -> payment_method;
+            $Transaction->transac_amount = $order_details -> transac_amount;
+            $Transaction->transac_date = date('Y-m-d');
+            $Transaction->save();
 
+            // Last Order History
+            $products = Product::all();
+            $order_details = Order_details::where('order-id', $order_id)->get();
+            $orderedBy = Order::where('id', $order_id)->get();
+
+            
+            return view('orders.index',
+            [
+                'products' => $products,
+                'order_details' => $order_details,
+                'customer_orders' => $orderedBy
+            ]);
 
         });
 
-       
+       return "Product orders Fails to inserted! check your inputs!";
 
     }
 
