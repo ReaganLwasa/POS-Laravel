@@ -43,7 +43,7 @@ class OrderController extends Controller
     public function store(Request $request)
     {
     
-       //return $request -> all();
+       return $request -> all();
 
         DB::transaction(function () use ($request){
 
@@ -57,8 +57,8 @@ class OrderController extends Controller
             //['order_id', 'product_id', 'unitprice', 'quantity', 'amount', 'discount'];
 
           // Order Details Modal
-
-          for ($product_id = 0; $product_id < $request->product_id; $product_id++) 
+          $cnt = (int) $request->product_id;
+          for ($product_id = 0; $product_id < $cnt; $product_id++) 
           {
             $order_details = new Order_details;
             $order_details->order_id = $order_id;
