@@ -43,7 +43,7 @@ class OrderController extends Controller
     public function store(Request $request)
     {
     
-       //return $request -> all();
+        return $request -> all();
 
         DB::transaction(function () use ($request){
 
