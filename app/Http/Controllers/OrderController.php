@@ -76,14 +76,14 @@ class OrderController extends Controller
             $Transaction->user_id = auth()->user()->id;
             $Transaction->balance = $request -> balance;
             $Transaction->paid_amount = $request -> paid_amount;
-            $Transaction->payment_method = $order_details -> payment_method;
-            $Transaction->transac_amount = $order_details -> transac_amount;
+            $Transaction->payment_method = $request -> payment_method;
+            $Transaction->transac_amount = $order_details -> amount;
             $Transaction->transac_date = date('Y-m-d');
             $Transaction->save();
 
             // Last Order History
             $products = Product::all();
-            $order_details = Order_details::where('order-id', $order_id)->get();
+            $order_details = Order_details::where('order_id', $order_id)->get();
             $orderedBy = Order::where('id', $order_id)->get();
 
             
@@ -96,7 +96,7 @@ class OrderController extends Controller
 
         });
 
-       return "Product orders Fails to inserted! check your inputs!";
+       return back()->with("Product orders Fails to inserted! check your inputs!");
 
     }
 
