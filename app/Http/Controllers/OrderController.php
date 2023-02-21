@@ -47,7 +47,7 @@ class OrderController extends Controller
 
         DB::transaction(function () use ($request){
 
-          // Order Modal
+          // Order Modal .....
             $orders = new Order;
             $orders->name = $request->customer_name;
             $orders->phone = $request->customer_phone;
